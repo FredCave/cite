@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>Rocks</title>
+	<title>Foam</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
@@ -28,6 +28,7 @@
 	<script src="assets/js/jquery.lettering.js"></script>
 
 	<script src="assets/text.js"></script>
+	<script src="assets/js/PasswordGenerator.js"></script>
 	<script src="assets/js/subtle.js"></script>
 	<script src="assets/js/blue_text.js"></script>
 	<script src="assets/js/volume_detect.js"></script>
@@ -115,9 +116,14 @@
 			Anim.init( 0.05 );
 			Anim.animate(); // SPEED OF ANIMATION
 
+			PasswordGenerator.init();
+
 			// TEXT ANIMATIONS
-	    	SubtleText.init( $("#subtle_text_wrapper"), 15000, 6000, 150 );   
-	    	BlueText.init();   
+			// textTarget, wordDelay, wordPause, letterSpeed
+	    	// MOVED TO PASSWORD GENERATOR
+	    	// SubtleText.init( $("#subtle_text_wrapper"), 15000, 3000, 120 );   
+			
+			BlueText.init();   
 
 	    });
 

@@ -107,54 +107,54 @@ var Anim = {
 		this.mesh = "";
 
 		// TEXTURE FOR BUBBLES
-		var imagePrefix = "assets/images/moondust-", 
-			directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"], 
-			imageSuffix = ".png";
-		var urls = [];
-		for (var i = 0; i < 6; i++)
+		// var imagePrefix = "assets/images/moondust-", 
+		// 	directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"], 
+		// 	imageSuffix = ".png";
+		// var urls = [];
+		// for (var i = 0; i < 6; i++)
 			
-			urls.push( imagePrefix + directions[i] + imageSuffix );
-			// urls.push( "assets/imagebank/img_" + self.currentImg + ".jpg" );
+		// 	urls.push( imagePrefix + directions[i] + imageSuffix );
+		// 	// urls.push( "assets/imagebank/img_" + self.currentImg + ".jpg" );
 
-		// console.log( 190, "assets/imagebank/img_" + self.currentImg + ".jpg" );
-		var textureCube = THREE.ImageUtils.loadTextureCube( urls );
+		// // console.log( 190, "assets/imagebank/img_" + self.currentImg + ".jpg" );
+		// var textureCube = THREE.ImageUtils.loadTextureCube( urls );
 
-		console.log( textureCube );
+		// console.log( textureCube );
 
-		textureCube.format = THREE.RGBFormat;
-		var fShader = THREE.FresnelShader;
-		var fresnelUniforms = 
-		{
-			"mRefractionRatio": { type: "f", value: 1.02 },
-			"mFresnelBias": 	{ type: "f", value: 0.1 },
-			"mFresnelPower": 	{ type: "f", value: 2.0 },
-			"mFresnelScale": 	{ type: "f", value: 0.5 }, // CHANGED FROM 1.0
-			"tCube": 			{ type: "t", value: textureCube }
-		};	
-		// create custom material for the shader
-		var customMaterial = new THREE.ShaderMaterial({
-		    uniforms: 		fresnelUniforms,
-			vertexShader:   fShader.vertexShader,
-			fragmentShader: fShader.fragmentShader
-		});
+		// textureCube.format = THREE.RGBFormat;
+		// var fShader = THREE.FresnelShader;
+		// var fresnelUniforms = 
+		// {
+		// 	"mRefractionRatio": { type: "f", value: 1.02 },
+		// 	"mFresnelBias": 	{ type: "f", value: 0.1 },
+		// 	"mFresnelPower": 	{ type: "f", value: 2.0 },
+		// 	"mFresnelScale": 	{ type: "f", value: 0.5 }, // CHANGED FROM 1.0
+		// 	"tCube": 			{ type: "t", value: textureCube }
+		// };	
+		// // create custom material for the shader
+		// var customMaterial = new THREE.ShaderMaterial({
+		//     uniforms: 		fresnelUniforms,
+		// 	vertexShader:   fShader.vertexShader,
+		// 	fragmentShader: fShader.fragmentShader
+		// });
 
 		
-		this.addBall( points, values, new THREE.Vector3(0,3.5,0) );
-		this.addBall( points, values, new THREE.Vector3(0,0,0) );
-		this.addBall( points, values, new THREE.Vector3(-1,-1,0) );
+		// this.addBall( points, values, new THREE.Vector3(0,3.5,0) );
+		// this.addBall( points, values, new THREE.Vector3(0,0,0) );
+		// this.addBall( points, values, new THREE.Vector3(-1,-1,0) );
 		
 		// isolevel = 0.5;
-		var geometry = this.marchingCubes( points, values, 0.5 );
+		// var geometry = this.marchingCubes( points, values, 0.5 );
 		
-		this.scene.remove( this.mesh );
+		// this.scene.remove( this.mesh );
 
 		// ** 
 		
-		this.mesh = new THREE.Mesh( geometry, customMaterial );
-			// BALLS ON/OFF SWITCH
-			if ( this.ballsVis ) {
-				this.scene.add( this.mesh );
-			}
+		// this.mesh = new THREE.Mesh( geometry, customMaterial );
+		// 	// BALLS ON/OFF SWITCH
+		// 	if ( this.ballsVis ) {
+		// 		this.scene.add( this.mesh );
+		// 	}
 
 		// this.prepareBalls( points, values, customMaterial );
 
@@ -293,7 +293,7 @@ var Anim = {
 		console.log("Anim.addBox" );
 
 		// CHECK HOW MANY BOXES HAVE BEEN ADDED
-		if ( this.scene.children.length > 3 ) {
+		if ( this.scene.children.length > 7 ) {
 
 			this.fadeOutId = this.scene.children[1].id;
 			// this.fadeOutOpacity = 0.5;
@@ -303,12 +303,15 @@ var Anim = {
 			// 	console.log( 306, childMaterials.materials[i].opacity );
 			// }
 			// child.materials[0].opacity = 1 + Math.sin(new Date().getTime() * .0025);
-			// this.scene.remove( this.scene.children[1] );
+			this.scene.remove( this.scene.children[1] );
+
+			console.log("Box removed.");
+
 			//object.materials[0].opacity = 1 + Math.sin(new Date().getTime() * .0025);
 
 		}
 
-		size size = 20000, 
+		var size = 20000, 
 			_opacity = 0.5;			
 
 		console.log( 285, size );

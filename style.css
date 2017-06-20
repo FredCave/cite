@@ -4,8 +4,12 @@ html, body {
     overflow: hidden;
 }
 
-#subtle_text_wrapper {
-/*    border: 1px solid red;*/
+ul, li {
+    list-style-type: none;
+}
+
+/*#subtle_text_wrapper {
+/*    border: 1px solid red;
     text-align: center;
     position: fixed;
     font-family: helvetica;
@@ -17,7 +21,7 @@ html, body {
     letter-spacing: 0.05em;
     transform: translateY(-50%);
     padding: 0;
-}
+}*/
 
 #subtle_text_wrapper li {
     display: none;
@@ -29,8 +33,10 @@ html, body {
     transition: opacity 1s ease-in-out, filter 1s linear;
 }
 
+#subtle_text_wrapper, 
 #blue_wrapper {
 /*    border: 1px solid red;*/
+    margin: 0;
     color: white;
     text-align: left;
     position: fixed;

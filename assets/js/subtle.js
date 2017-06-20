@@ -19,13 +19,15 @@ var SubtleText = {
 
         // GET TEXTBLOCKS FROM EXTERNAL TEXT FILE // TEXT.JS
         this._target = textTarget;
-        this._textBlocks = SubtleSources;
+        this._textBlocks = PasswordGenerator.words;
         this._wordDelay = wordDelay;
         this._wordPause = wordPause;
         this._letterSpeed = letterSpeed;
 
         // SHUFFLE TEXTS
-        this.shuffle( SubtleSources );
+        // this.shuffle( SubtleSources );
+
+        console.log(30, this._textBlocks);
 
         this.mainLoop();
 
@@ -132,13 +134,13 @@ var SubtleText = {
                 
                 // console.log("Clear interval.");
                 clearInterval(interval);
-                block.hide();
-                // WHEN FINISHED RUN MAIN LOOP AGAIN
-                self._current++;
-                self.mainLoop();
-
-                console.log("Subtle.fadedOut");
-              
+                setTimeout( function(){
+                    block.hide();                    
+                    // WHEN FINISHED RUN MAIN LOOP AGAIN
+                    self._current++;
+                    self.mainLoop();
+                    console.log("Subtle.fadedOut");
+                }, 2000 );      
             }
             
         }, this._letterSpeed );           
