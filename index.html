@@ -48,7 +48,7 @@
 	<script>
 
 		// VOLUME DETECT SENSITIVITY
-		var sens = 0.01;
+		var sens = 0.035;
 
 	    $(document).on("ready", function(){
 
@@ -56,13 +56,13 @@
 			$(window).on("keydown", function(e){
 
 				// BALLS
-				if ( e.which == 66 ) { // B
-					if ( Anim.ballsVis === false ) {
-						Anim.ballsVis = true;
-					} else {
-						Anim.ballsVis = false;
-					}
-				}
+				// if ( e.which == 66 ) { // B
+				// 	if ( Anim.ballsVis === false ) {
+				// 		Anim.ballsVis = true;
+				// 	} else {
+				// 		Anim.ballsVis = false;
+				// 	}
+				// }
 
 				// FAST FORWARD
 				if ( e.which == 70 ) { // F
@@ -94,6 +94,21 @@
 					SubtleText.toggleVis();
 				}
 
+				// SENSITIVITY THRESHOLD UP
+				// (REDUCES FIGURE)
+				if ( e.which == 38 ) { // UP
+					sens = sens + 0.0001;
+					console.log( "Threshold up.", sens.toFixed(4) );
+				}
+
+				// SENSITIVITY  DOWN
+				if ( e.which == 40 ) { // DOWN
+					if ( sens > 0.00001 ) {
+						sens = sens - 0.0001;
+					}
+					console.log( "Threshold down.", sens.toFixed(4) );
+				}
+
 			});
 
 	    	// KICKS OFF THREE.JS ANIMATION
@@ -101,7 +116,7 @@
 			Anim.animate(); // SPEED OF ANIMATION
 
 			// TEXT ANIMATIONS
-	    	SubtleText.init( $("#subtle_text_wrapper"), 9000, 6000, 150 );   
+	    	SubtleText.init( $("#subtle_text_wrapper"), 15000, 6000, 150 );   
 	    	BlueText.init();   
 
 	    });

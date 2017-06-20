@@ -12,6 +12,7 @@ var SubtleText = {
 
     _current: 0,
 
+
     init: function ( textTarget, wordDelay, wordPause, letterSpeed ) {
 
         console.log("Subtle.init");
@@ -23,8 +24,21 @@ var SubtleText = {
         this._wordPause = wordPause;
         this._letterSpeed = letterSpeed;
 
+        // SHUFFLE TEXTS
+        this.shuffle( SubtleSources );
+
         this.mainLoop();
 
+    },
+
+    shuffle: function (a) {
+        var j, x, i;
+        for (i = a.length; i; i--) {
+            j = Math.floor(Math.random() * i);
+            x = a[i - 1];
+            a[i - 1] = a[j];
+            a[j] = x;
+        }
     },
 
     mainLoop: function () {

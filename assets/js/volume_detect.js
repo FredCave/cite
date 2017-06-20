@@ -138,7 +138,7 @@ function gotStream(stream) {
 
 function volumeDetector ( time ) {
 
-    console.log(meter.volume);
+    // console.log(meter.volume);
 
     if ( meter.volume > (sens * 6) ) {
         Anim.fastForward = 3;

@@ -14,12 +14,25 @@ var BlueText = {
         // GET TEXTBLOCKS FROM EXTERNAL TEXT FILE // TEXT.JS
         this._target = $("#blue_wrapper");
         this._textBlocks = BlueSources;
-        this._wordDelay = 12000;
+        this._wordDelay = 18000;
         this._wordPause = 8000;
         this._letterSpeed = 120;
 
+        // SHUFFLE TEXTS
+        this.shuffle( BlueSources );
+
         this.mainLoop();
 
+    },
+
+    shuffle: function (a) {
+        var j, x, i;
+        for (i = a.length; i; i--) {
+            j = Math.floor(Math.random() * i);
+            x = a[i - 1];
+            a[i - 1] = a[j];
+            a[j] = x;
+        }
     },
 
     mainLoop: function () {

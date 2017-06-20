@@ -15,7 +15,7 @@ var Anim = {
 
 	ballsVis : false,
 	currentImg: 1, 
-	totalImgs: 20, 
+	totalImgs: 40, 
 	fastForward: 1, 
 
 	// FUNCTIONS
@@ -63,39 +63,6 @@ var Anim = {
 		this.switchImages( "pos" );
 		this.switchImages( "neg" );
 		this.switchImages( "pos" );
-		// 
-		
-
-		// BOX TWO
-		// IMAGE SRCs
-		// var imagePrefix = "images/dawnmountaintwo-";
-		// var imagePrefix = "assets/images/moondust-";
-		// var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-		// var imageSuffix = ".png";
-		// // SIZE OF CUBE
-		// var skyGeometryTwo = new THREE.CubeGeometry( 500, 500, 500 );	
-
-		// var urls = [];
-		// for (var i = 0; i < 6; i++)
-		// 	urls.push( imagePrefix + directions[i] + imageSuffix );
-		
-		// var materialArray = [];
-		// for (var i = 0; i < 6; i++)
-		// 	materialArray.push( new THREE.MeshBasicMaterial({
-		// 		map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
-		// 		side: THREE.BackSide,
-		// 		// FOLLOWING THREE LINES ADDED
-		// 		transparent: true, 
-		// 		opacity: 0.5, 
-		// 		// color: 0xFF0000
-		// 	}));
-		// var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
-		// var skyBoxTwo = new THREE.Mesh( skyGeometryTwo, skyMaterial );
-		// this.scene.add( skyBoxTwo );
-
-		
-
-		// OPACITY WHEN PUSHING TO ARRAY IS IMPORTANT
 
 		////////////
 		// CUSTOM //
@@ -136,25 +103,24 @@ var Anim = {
 		for (var i = 0; i < size3; i++) 
 			values[i] = 0;
 		 
-		// resetValues();
-		this.addBall( points, values, new THREE.Vector3(0,3.5,0) );
-		this.addBall( points, values, new THREE.Vector3(0,0,0) );
-		this.addBall( points, values, new THREE.Vector3(-1,-1,0) );
 		
-		// isolevel = 0.5;
-		var geometry = this.marchingCubes( points, values, 0.5 );
-		
-		// RELEASE THE BUBBLES!
+		this.mesh = "";
 
 		// TEXTURE FOR BUBBLES
 		var imagePrefix = "assets/images/moondust-", 
 			directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"], 
-			imageSuffix = ".png", 
-			urls = [];
+			imageSuffix = ".png";
+		var urls = [];
 		for (var i = 0; i < 6; i++)
+			
 			urls.push( imagePrefix + directions[i] + imageSuffix );
+			// urls.push( "assets/imagebank/img_" + self.currentImg + ".jpg" );
 
+		// console.log( 190, "assets/imagebank/img_" + self.currentImg + ".jpg" );
 		var textureCube = THREE.ImageUtils.loadTextureCube( urls );
+
+		console.log( textureCube );
+
 		textureCube.format = THREE.RGBFormat;
 		var fShader = THREE.FresnelShader;
 		var fresnelUniforms = 
@@ -171,27 +137,88 @@ var Anim = {
 			vertexShader:   fShader.vertexShader,
 			fragmentShader: fShader.fragmentShader
 		});
+
 		
-		var mesh = new THREE.Mesh( geometry, customMaterial );
-		// scene.add(mesh);
+		this.addBall( points, values, new THREE.Vector3(0,3.5,0) );
+		this.addBall( points, values, new THREE.Vector3(0,0,0) );
+		this.addBall( points, values, new THREE.Vector3(-1,-1,0) );
 		
+		// isolevel = 0.5;
+		var geometry = this.marchingCubes( points, values, 0.5 );
+		
+		this.scene.remove( this.mesh );
+
+		// ** 
+		
+		this.mesh = new THREE.Mesh( geometry, customMaterial );
+			// BALLS ON/OFF SWITCH
+			if ( this.ballsVis ) {
+				this.scene.add( this.mesh );
+			}
+
+		// this.prepareBalls( points, values, customMaterial );
+
 	    // bubbles like to move around
 		this.ballUpdate = function(t) {
+
 			self.resetValues( values );
+			
 			self.addBall( points, values, new THREE.Vector3( 2.0 * Math.cos(1.1 * t), 1.5 * Math.sin(1.6 * t), 3.0 * Math.sin(1.0 * t) ) );
 			self.addBall( points, values, new THREE.Vector3( 2.4 * Math.sin(1.8 * t), 1.5 * Math.sin(1.3 * t), 1.9 * Math.cos(1.9 * t) ) );
 			self.addBall( points, values, new THREE.Vector3( 3.0 * Math.cos(1.5 * t), 2.5 * Math.cos(1.2 * t), 2.1 * Math.sin(1.7 * t) ) );
 				
-			this.scene.remove( mesh );
+			this.scene.remove( this.mesh );
 			var newGeometry = this.marchingCubes( points, values, 0.5 );
-			mesh = new THREE.Mesh( newGeometry, customMaterial );
+
+			// FOLLOWING INSERTED
+
+			urls = [];
+			for (var i = 0; i < 6; i++)
+				
+				// urls.push( imagePrefix + directions[i] + imageSuffix );
+				urls.push( "assets/images/water.jpg" );
+
+			// console.log( 190, "assets/imagebank/img_" + self.currentImg + ".jpg" );
+			var textureCube = THREE.ImageUtils.loadTextureCube( urls );
+
+			// console.log( textureCube );
+
+			textureCube.format = THREE.RGBFormat;
+
+			fresnelUniforms = 
+			{
+				"mRefractionRatio": { type: "f", value: 1.02 },
+				"mFresnelBias": 	{ type: "f", value: 0.1 },
+				"mFresnelPower": 	{ type: "f", value: 2.0 },
+				"mFresnelScale": 	{ type: "f", value: 0.5 }, // CHANGED FROM 1.0
+				"tCube": 			{ type: "t", value: textureCube }
+			};	
+
+			customMaterial = new THREE.ShaderMaterial({
+			    uniforms: 		fresnelUniforms,
+				vertexShader:   fShader.vertexShader,
+				fragmentShader: fShader.fragmentShader
+			});
+
+			this.mesh = new THREE.Mesh( newGeometry, customMaterial );
 			
 			// BALLS ON/OFF SWITCH
 			if ( this.ballsVis ) {
-				this.scene.add( mesh );
+				this.scene.add( this.mesh );
 			}
 
+			// self.prepareBalls( points, values );
+
 		}
+		
+	}, 
+
+	prepareBalls: function ( points, values, material ) {
+
+		var self = this;
+
+				// resetValues();
+
 		
 	}, 
 
@@ -265,22 +292,24 @@ var Anim = {
 
 		console.log("Anim.addBox" );
 
-		var size, _opacity;
-
 		// CHECK HOW MANY BOXES HAVE BEEN ADDED
-		if ( this.scene.children.length > 5 ) {
-			console.log( this.currentImg, this.scene.children );
-			this.scene.remove( this.scene.children[1] );
+		if ( this.scene.children.length > 3 ) {
+
+			this.fadeOutId = this.scene.children[1].id;
+			// this.fadeOutOpacity = 0.5;
+			console.log( 304, this.scene.getObjectById( this.fadeOutId ) );
+			// for (var i = 0; i < 6; i++) {
+			// this.scene.getObjectById( this.fadeOutId ).material.materials.opacity = 1 - Math.sin( new Date().getTime() * .0025 );
+			// 	console.log( 306, childMaterials.materials[i].opacity );
+			// }
+			// child.materials[0].opacity = 1 + Math.sin(new Date().getTime() * .0025);
+			// this.scene.remove( this.scene.children[1] );
+			//object.materials[0].opacity = 1 + Math.sin(new Date().getTime() * .0025);
+
 		}
 
-		// if ( images === "moondust" ) {
-		// 	// size = 20000,
-		// 	// _opacity = 0.5;
-		// 	// imagePrefix + directions[i] + imageSuffix
-		// } else {
-			size = 20000; 
+		size size = 20000, 
 			_opacity = 0.5;			
-		// }
 
 		console.log( 285, size );
 
@@ -322,6 +351,19 @@ var Anim = {
 			self.render();		
 			self.update();
 
+			// FADE OUT AND THEN REMOVE FIRST BOX
+			if ( self.fadeOutOpacity > 0 ) {
+
+				self.fadeOutOpacity = self.fadeOutOpacity - 0.005;
+				self.scene.getObjectById( self.fadeOutId ).material.materials[1].opacity = self.fadeOutOpacity;
+				console.log( self.scene.getObjectById( self.fadeOutId ) );
+
+			} else if ( self.fadeOutOpacity <= 0 ) {
+				self.scene.remove( self.scene.children[1] );
+				console.log( "Object removed." );
+			}
+			
+
 	    }, 1000 / 30 );
 
 	},
@@ -332,7 +374,7 @@ var Anim = {
 		// stats.update();
 			
 		var t = this.clock.getElapsedTime();
-		this.ballUpdate(0.05 * t);
+		// this.ballUpdate(0.05 * t);
 
 	},
 
@@ -349,7 +391,7 @@ var Anim = {
 
 		// console.log( 344, speed );
 
-		var distanceFromScene = 8, 
+		var distanceFromScene = 10, 
 			timer = this.clock.elapsedTime * speed, 
 			self = this;
 
@@ -360,7 +402,7 @@ var Anim = {
 		this.camera.position.y = Math.sin( timer ) * distanceFromScene * 0.5;
 		this.camera.lookAt( this.scene.position );
 
-		// console.log( this.camera.position.x.toFixed(2), this.camera.position.y.toFixed(2), this.camera.position.z.toFixed(2) );
+		// console.log( this.camera.position.y.toFixed(4), this.camera.position.z.toFixed(4) );
 		if ( this.camera.position.y.toFixed(4) == 5.0000 && this.camera.position.z.toFixed(4) == 30.0000 ) {
 			
 			console.log(341);
